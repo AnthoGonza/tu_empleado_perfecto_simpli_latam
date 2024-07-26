@@ -1,0 +1,15 @@
+#modalVisualizarEmpresa{
+    display: block;
+    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, .5);
+}
+.titulo{
+    width: 100%;
+}
+.ml-1 {
+    margin-left: 1em;
+}
+/* 
+.swal2-modal{
+    transform: scale(.75);
+} */
