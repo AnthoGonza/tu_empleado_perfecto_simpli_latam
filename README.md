@@ -1,5 +1,3 @@
-# tu_empleado_perfecto_simpli_latam
- 
 Tu Empleado Perfecto: Solución prueba tecnica
 ====================================
 
