@@ -147,7 +147,7 @@
         },
         methods: {
             init(){
-                console.log("process.env.DOMAIN_ENV: " + process.env.DOMAIN_ENV);
+                console.log("process.env.VUE_APP_DOMAIN_ENV: " + process.env.VUE_APP_DOMAIN_ENV);
                 this.obtenerListadoEmpresa();
                 //this.imagen_logo = import.meta.env.VITE_DOMAIN_ENV + '/public/assets/images/logo_3.png';
                 
