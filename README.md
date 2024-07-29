@@ -56,7 +56,7 @@ Instalar dependencias del modulo frontend_vue:
     npm install
 
 El sistama está/estará disponibles en el siguiente link
-[https://tuempleadoperfecto.desapli.com](https://tuempleadoperfecto.desapli.com/).
+[http://tuempleadoperfecto.desapli.com](http://tuempleadoperfecto.desapli.com/).
 
 Términos y condiciones de uso
 -----------------------------
