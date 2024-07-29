@@ -29,7 +29,8 @@ Funcionalidades implementadas
 - Acciones en cuanto a validación y formatos:
     - Formato rut ya establecido en los formularios.
     - Validación rut en base modulo 11.
-    - Validación rut ya existente.
+    - Validación rut ya existente en Base de datos.
+    - Validación email, formato correcto
 
 Instalación de la solución
 -----------
@@ -55,8 +56,13 @@ Instalar dependencias del modulo frontend_vue:
 
     npm install
 
-El sistama está/estará disponibles en el siguiente link
+La solución está disponible en el siguiente link:
 [http://tuempleadoperfecto.desapli.com](http://tuempleadoperfecto.desapli.com/).
+
+Se ha desplegado los siguientes componentes en linea:
+* EC2: módulo api
+* RDS: Base de datos MySQL
+* DOMINIO WEB: http://tuempleadoperfecto.desapli.com/
 
 Términos y condiciones de uso
 -----------------------------

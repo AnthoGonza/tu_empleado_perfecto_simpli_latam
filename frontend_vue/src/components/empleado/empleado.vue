@@ -66,47 +66,32 @@
                 <div class="row">
                     <div class="col-12 mb-4">
                         <div class="form-group">
-                            <label class="titulo" align="left">Rut</label>
-                            <input type="text" class="form-control sm" id="validationCustom03" v-model="form.rut.valor"  required>
-                            <div class="invalid-feedback">
-                                Campo obligatorio
-                            </div>
+                            <label class="titulo" align="left">Rut*</label>
+                            <input @keypress="validaCaracteresRut($event)" maxlength="12" @keyup="validaFormatoRut($event)" type="text" class="form-control sm" id="validationCustom03" v-model="form.rut.valor"  required>
                         </div>
                     </div>
                     <div class="col-12 mb-4">
                         <div class="form-group">
-                            <label class="titulo" align="left">Nombre</label>
+                            <label class="titulo" align="left">Nombre*</label>
                             <input type="text" class="form-control sm" id="validationCustom03" v-model="form.nombres.valor" required>
-                            <div class="invalid-feedback">
-                                Campo obligatorio
-                            </div>
                         </div>
                     </div>
                     <div class="col-12 mb-4">
                         <div class="form-group">
-                            <label class="titulo" align="left">Apellido uno</label>
+                            <label class="titulo" align="left">Apellido uno*</label>
                             <input type="text" class="form-control sm" id="validationCustom03" v-model="form.apellido_uno.valor" required>
-                            <div class="invalid-feedback">
-                                Campo obligatorio
-                            </div>
                         </div>
                     </div>
                     <div class="col-12 mb-4">
                         <div class="form-group">
-                            <label class="titulo" align="left">Apellido dos</label>
+                            <label class="titulo" align="left">Apellido dos*</label>
                             <input type="text" class="form-control sm" id="validationCustom03" v-model="form.apellido_dos.valor" required>
-                            <div class="invalid-feedback">
-                                Campo obligatorio
-                            </div>
                         </div>
                     </div>
                     <div class="col-12 mb-4">
                         <div class="form-group">
-                            <label class="titulo" align="left">Email</label>
+                            <label class="titulo" align="left">Email*</label>
                             <input type="text" class="form-control sm" id="validationCustom03" v-model="form.email.valor" required>
-                            <div class="invalid-feedback">
-                                Campo obligatorio
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -180,7 +165,7 @@
         },
         methods: {
             init(){
-                console.log("process.env.DOMAIN_ENV: " + process.env.DOMAIN_ENV);
+                console.log("process.env.VUE_APP_DOMAIN_ENV: " + process.env.VUE_APP_DOMAIN_ENV);
                 this.obtenerListadoEmpresa();
                 
             },
@@ -265,27 +250,14 @@
                 this.form.mostrar   = true;
             },
             guardarDatosEmpleado(){
-                let estado_ok = true;
-                if (this.form.rut.valor == ""){
-                    estado_ok = false;
-                } else if (this.form.nombres.valor == ""){
-                    estado_ok = false;
-                }  else if (this.form.apellido_uno.valor == ""){
-                    estado_ok = false;
-                }  else if (this.form.apellido_dos.valor == ""){
-                    estado_ok = false;
-                } else if (this.form.email.valor == ""){
-                    estado_ok = false;
-                }
-                    
-                if (!estado_ok) {
-                    this.$swal({
-                        title               : "Tiene campos pendiente que completar",
-                        text                : 'Validación encontrada',
-                        icon                : 'warning',
-                        confirmButtonColor  : '#556ee6',
-                        confirmButtonText   : 'Cerrar alerta'
-                    });
+                const validEmail =  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+                if (this.form.rut.valor == "" || this.form.nombres.valor == "" || this.form.apellido_uno.valor == "" || 
+                    this.form.apellido_dos.valor == "" || this.form.email.valor == ""){
+                    this.$swal("Tiene campos pendiente que completar", "Validación encontrada", "warning");
+                } else if (this.form.rut.valor.length < 3 || !this.validarRut(this.form.rut.valor.split("-")[0], this.form.rut.valor.split("-")[1]) ) {
+                    this.$swal("RUT ingresado no está correcto", "Validación encontrada", "warning");
+                } else if (!validEmail.test(this.form.email.valor)) {
+                    this.$swal("Formato Email no está correcto(XXXXX@XXXX.XX)", "Validación encontrada", "warning");
                 } else {
                     const swal = this.$swal({
                         text                : '¿Estas seguro de guardar la información ingresada?',
@@ -351,6 +323,66 @@
             },
             cerrarModalEmpleado(){
                 this.form.mostrar = false;
+            },
+            validaCaracteresRut($event) {
+                //1, 2, 3, 4, 5, 6, 7, 8, 9, 0, K, k
+                if (($event.keyCode >= 48 && $event.keyCode <= 57) || $event.keyCode == 107 || $event.keyCode == 75) {
+                    return true;
+                } else {
+                    return $event.preventDefault();
+                }
+            },
+            validaFormatoRut($event) {
+                console.log($event);
+                let rut_ingresado   = this.form.rut.valor.trim().replace("-", "");
+                let largo           = rut_ingresado.length;
+                if(largo > 1) {
+                    let rut = rut_ingresado.substring(0, largo - 1);
+                    let dv  = rut_ingresado.substring(largo - 1, largo);
+                    rut_ingresado = rut + "-" + dv;
+                }
+                this.form.rut.valor = rut_ingresado;
+            },
+            validarRut(rut, dig) {
+                //RESULVARIABLE TADO
+                let exito = false;
+                //OBTENIENDO TAMAÑO DEL RUT
+                let largo = rut.length;
+                //CREANDO TAMAÑO DE ALMACENAMIENTO RUT
+                let num = [];
+                //ALMACENANDO RUT DIGITO POR DIGITO
+                for (let i = 0; i < largo; i++) {
+                    num[i] = parseInt(rut.charAt(i) + "");
+                }
+                //MULTIPLICANDO DE DERECHA A IZQUIERDA LOS NUMERO DE 2 AL 7
+                let variable = 2;
+                for (let i = largo - 1; i >= 0; i--) {
+                    num[i] = num[i] * variable;
+                    variable++;
+                    if (variable == 8) {
+                        variable = 2;
+                    }
+                }
+                //SUMANDO TODA LA CADENA RESTANTE (MULTIPLICADA)
+                let suma = 0;
+                for (let i = 0; i < largo; i++) {
+                    suma += num[i];
+                }
+                //OBTENIENDO EL MODULO DE LA SUMA
+                let resto = suma % 11;
+                let dv = 11 - resto;
+                //OBTENIENDO DIGITO VERIFICADOR
+                if (dv == "10" ) {
+                    dv = "k";
+                } else if (dv == "11") {
+                    dv = "0";
+                }
+                //COMARANDO SI EL RUT INTRODUCIDO ES VERDADERO O NO
+                if (dv == dig.toLowerCase()) {
+                    exito = true;
+                }
+                //RETORNAMOS EL ESTADO DE LA COMPROBACION FINAL
+                return exito;
             },
             confirmarEliminarEmpleado(){
                 this.$swal('Estará listo para el próximo SPRINTS', 'Mensaje informativo', 'info');

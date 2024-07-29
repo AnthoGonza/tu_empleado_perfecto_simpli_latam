@@ -61,7 +61,7 @@
                     <div class="col-12 mb-4">
                         <div class="form-group">
                             <label class="titulo" align="left">Rut*</label>
-                            <input  @keypress="validaCaracteresRut($event)" @keyup="validaFormatoRut($event)" type="text" class="form-control sm" id="validationCustom03" v-model="form.rut.valor"  required>
+                            <input  @keypress="validaCaracteresRut($event)" maxlength="12" @keyup="validaFormatoRut($event)" type="text" class="form-control sm" id="validationCustom03" v-model="form.rut.valor"  required>
                         </div>
                     </div>
                     <div class="col-12 mb-4">
@@ -79,7 +79,7 @@
                     <div class="col-12 mb-4">
                         <div class="form-group">
                             <label class="titulo" align="left">Telefono*</label>
-                            <input type="text" class="form-control sm" id="validationCustom03" v-model="form.telefono.valor" required>
+                            <input type="text" @keypress="validaCaracteresTelefono($event)" maxlength="9" class="form-control sm" id="validationCustom03" v-model="form.telefono.valor" required>
                         </div>
                     </div>
                 </div>
@@ -271,8 +271,18 @@
             validaCaracteresRut($event) {
                 //1, 2, 3, 4, 5, 6, 7, 8, 9, 0, K, k
                 if (($event.keyCode >= 48 && $event.keyCode <= 57) || $event.keyCode == 107 || $event.keyCode == 75) {
-                    return true
-                } 
+                    return true;
+                } else {
+                    return $event.preventDefault();
+                }
+            },
+            validaCaracteresTelefono($event) {
+                //1, 2, 3, 4, 5, 6, 7, 8, 9, 0
+                if ($event.keyCode >= 48 && $event.keyCode <= 57) {
+                    return true;
+                }  else {
+                    return $event.preventDefault();
+                }
             },
             validaFormatoRut($event) {
                 console.log($event);
