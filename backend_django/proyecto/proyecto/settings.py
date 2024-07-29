@@ -85,10 +85,10 @@ DATABASES = {
     # }
     
     'default': {
-        'NAME'      : 'desaplic_tu_empleado_perfecto',
+        'NAME'      : 'tu_empleado_perfecto',
         'ENGINE'    : 'django.db.backends.mysql',
-        'HOST'      : '15.235.86.83',
-        'USER'      : 'desaplic_tu_empleado_perfecto',
+        'HOST'      : 'tuempleadoperfecto.ctmmegmsiphb.eu-north-1.rds.amazonaws.com',
+        'USER'      : 'tuempleado',
         'PASSWORD'  : 'Qk.%ELh;JdNv',
         'PORT'      : '3306'
     }
